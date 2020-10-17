@@ -12,12 +12,12 @@ export default class Node extends Component {
         const {nodeInfo, connections} = this.props;
 
         return (
-            <Draggable handle={'.node__container'}>
-                <div className={'node'}>
+            <Draggable handle={'.node__container'} defaultPosition={nodeInfo.defaultPos}>
+                <div className={'node'} id={nodeInfo.id}>
                     <div className={'node__container ' + (nodeInfo.status ? 'node__container--active' : '')}>
-                        {nodeInfo.name}
+                        {nodeInfo.nodeType.name}
 
-                        {nodeInfo.hasSwitch &&
+                        {nodeInfo.nodeType.hasSwitch &&
                         <div className={'switch ' + (nodeInfo.switchEnabled ? 'switch--active' : '')} onClick={() => this.toggleSwitch()}>
                             <div className={'switch__inner'}/>
                         </div>

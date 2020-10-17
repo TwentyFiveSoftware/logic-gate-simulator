@@ -12,13 +12,13 @@ export default class App extends Component {
 
         nodes: [
             // new NodeInfo(NodeType.NOT_GATE),
-            new NodeInfo(NodeType.INPUT),
-            new NodeInfo(NodeType.INPUT),
-            new NodeInfo(NodeType.OUTPUT),
-            new NodeInfo(NodeType.NAND_GATE),
-            new NodeInfo(NodeType.NAND_GATE),
-            new NodeInfo(NodeType.NAND_GATE),
-            new NodeInfo(NodeType.NAND_GATE),
+            // new NodeInfo(NodeType.INPUT),
+            // new NodeInfo(NodeType.INPUT),
+            // new NodeInfo(NodeType.OUTPUT),
+            // new NodeInfo(NodeType.NAND_GATE),
+            // new NodeInfo(NodeType.NAND_GATE),
+            // new NodeInfo(NodeType.NAND_GATE),
+            // new NodeInfo(NodeType.NAND_GATE),
             // new NodeInfo(NodeType.NOT_GATE),
             // new NodeInfo(NodeType.AND_GATE),
             // new NodeInfo(NodeType.OR_GATE),
@@ -26,6 +26,7 @@ export default class App extends Component {
     }
 
     fromNode = null;
+    loadedFromLocalStorage = false;
 
     startLine = (nodeInfo, id) => {
         this.fromNode = {nodeInfo, id};
@@ -60,6 +61,8 @@ export default class App extends Component {
     }
 
     getConnectionLineOfConnection = connection => {
+        if (document.getElementById(connection.from.id) === null || document.getElementById(connection.to.id) === null) return '';
+
         const fromPos = document.getElementById(connection.from.id).getBoundingClientRect();
         const toPos = document.getElementById(connection.to.id).getBoundingClientRect();
         return `${fromPos.x + fromPos.width / 2},${fromPos.y + fromPos.height / 2} ${toPos.x + toPos.width / 2},${toPos.y + toPos.height / 2}`;
@@ -91,13 +94,63 @@ export default class App extends Component {
         );
     }
 
+    getConnectionStorageObject = connection =>
+        ({fromNodeId: connection.from.nodeInfo.id, fromPointId: connection.from.id, toNodeId: connection.to.nodeInfo.id, toPointId: connection.to.id});
+
+    save = () => {
+        if (!this.loadedFromLocalStorage) return;
+
+        const storageNodes = JSON.stringify(this.state.nodes.map(n => n.getStorageObject()).filter(n => n !== null));
+        localStorage.setItem('nodes', storageNodes);
+
+        const storageConnections = JSON.stringify(this.state.connections.map(c => this.getConnectionStorageObject(c)));
+        localStorage.setItem('connections', storageConnections);
+    }
+
+    load = () => {
+        let nodes = [];
+        let connections = [];
+
+        if (localStorage.getItem('nodes') !== null)
+            nodes = JSON
+                .parse(localStorage.getItem('nodes'))
+                .map(n => new NodeInfo(NodeType[n.nodeTypeKey], n.id, n.pos, n.status, n.switchEnabled));
+
+        if (localStorage.getItem('connections') !== null)
+            connections = JSON
+                .parse(localStorage.getItem('connections'))
+                .map(c => ({
+                    from: {nodeInfo: nodes.find(n => n.id === c.fromNodeId), id: c.fromPointId},
+                    to: {nodeInfo: nodes.find(n => n.id === c.toNodeId), id: c.toPointId}
+                }));
+
+        this.setState(
+            {nodes, connections},
+            () => {
+                this.loadedFromLocalStorage = true;
+                this.simulate();
+            }
+        );
+    }
+
     componentDidMount() {
-        this.simulate();
+        this.load();
+
+        window.addEventListener('keydown', e => {
+            const type = Object.values(NodeType).find(t => t.key === e.key);
+            if (type !== undefined)
+                this.setState({nodes: [...this.state.nodes, new NodeInfo(type)]});
+        });
     }
 
     render() {
+        this.save();
+
         return (
-            <div className={'app'} onMouseMove={e => this.mouseMove(e.clientX, e.clientY)} onMouseUp={() => this.mouseUp()} onContextMenu={e => e.preventDefault()}>
+            <div className={'app'}
+                 onMouseMove={e => this.mouseMove(e.clientX, e.clientY)}
+                 onMouseUp={() => this.mouseUp()} onContextMenu={e => e.preventDefault()}
+            >
                 <svg className={'line'}>
                     <polyline points={this.state.points}/>
                 </svg>

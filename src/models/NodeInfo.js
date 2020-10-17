@@ -1,13 +1,14 @@
 import {v4} from 'uuid';
+import NodeType from "./NodeType";
 
 export class NodeInfo {
-    constructor(nodeType) {
-        this.id = v4();
+    constructor(nodeType, id = v4(), defaultPos = {x: 50, y: 50}, startStatus = false, startSwitchEnabled = false) {
+        this.id = id;
         this.nodeType = nodeType;
-        this.name = nodeType.name;
+        this.defaultPos = defaultPos;
 
-        this.hasSwitch = nodeType.hasSwitch;
-        this.switchEnabled = false;
+        this.switchEnabled = startSwitchEnabled;
+        this.status = startStatus;
 
         this.inputs = [];
         this.outputs = [];
@@ -17,8 +18,6 @@ export class NodeInfo {
 
         for (let o = 0; o < nodeType.outputs; o++)
             this.outputs.push(`NODE-${this.id}_OUTPUT-${o}`);
-
-        this.status = false;
     }
 
     hasIncomingConnectionsOnPort = (id, connections) => connections.find(c => c.to.id === id) !== undefined;
@@ -30,5 +29,19 @@ export class NodeInfo {
 
     simulate = connections => {
         this.status = this.nodeType.transform(this.getProcessedInput(connections), this.switchEnabled);
+    }
+
+    getStorageObject = () => {
+        if (document.getElementById(this.id) === null) return null;
+
+        const pos = document.getElementById(this.id).getBoundingClientRect();
+
+        return {
+            id: this.id,
+            nodeTypeKey: Object.keys(NodeType).find(k => NodeType[k] === this.nodeType),
+            pos: {x: pos.x, y: pos.y},
+            status: this.status,
+            switchEnabled: this.switchEnabled
+        };
     }
 }
