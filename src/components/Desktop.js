@@ -132,7 +132,12 @@ export default class Desktop extends Component {
         x = -x + Math.floor(window.innerWidth / 2) - 100;
         y = -y + Math.floor(window.innerHeight / 2) - 50;
 
-        this.setState({nodes: [...this.state.nodes, new NodeInfo(type, {x, y})]});
+        this.setState(
+            {
+                nodes: [...this.state.nodes, new NodeInfo(type, {x, y})]
+            },
+            () => this.simulate()
+        );
     }
 
     removeNode = id => {
