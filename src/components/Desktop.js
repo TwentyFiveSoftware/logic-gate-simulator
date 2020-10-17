@@ -135,6 +135,16 @@ export default class Desktop extends Component {
         this.setState({nodes: [...this.state.nodes, new NodeInfo(type, {x, y})]});
     }
 
+    removeNode = id => {
+        this.setState(
+            {
+                nodes: this.state.nodes.filter(n => n.id !== id),
+                connections: this.state.connections.filter(c => c.from.nodeInfo.id !== id && c.to.nodeInfo.id !== id)
+            },
+            () => this.simulate()
+        );
+    }
+
     componentDidMount() {
         this.load();
 
@@ -165,11 +175,12 @@ export default class Desktop extends Component {
                         </svg>
                     )}
 
-                {this.state.nodes.map((node, index) => (
-                    <Node key={index}
+                {this.state.nodes.map(node => (
+                    <Node key={node.id}
                           startLine={id => this.startLine(node, id)}
                           connectLine={id => this.connectLine(node, id)}
                           removeConnections={id => this.removeConnections(id)}
+                          removeNode={() => this.removeNode(node.id)}
                           nodeInfo={node}
                           connections={this.state.connections}
                           simulate={() => this.simulate()}
