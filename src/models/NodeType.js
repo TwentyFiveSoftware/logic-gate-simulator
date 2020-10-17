@@ -6,6 +6,13 @@ export default {
         hasSwitch: true,
         transform: (inputs, switchEnabled) => switchEnabled
     },
+    OUTPUT: {
+        inputs: 1,
+        outputs: 0,
+        name: 'OUTPUT',
+        hasSwitch: false,
+        transform: (inputs, __) => inputs[0]
+    },
     NOT_GATE: {
         inputs: 1,
         outputs: 1,
@@ -26,5 +33,12 @@ export default {
         name: 'OR-GATE',
         hasSwitch: false,
         transform: (inputs, _) => inputs[0] || inputs[1]
+    },
+    NAND_GATE: {
+        inputs: 2,
+        outputs: 1,
+        name: 'NAND-GATE',
+        hasSwitch: false,
+        transform: (inputs, _) => !(inputs[0] && inputs[1])
     },
 };

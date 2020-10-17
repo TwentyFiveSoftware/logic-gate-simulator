@@ -11,12 +11,17 @@ export default class App extends Component {
         connections: [],
 
         nodes: [
+            // new NodeInfo(NodeType.NOT_GATE),
             new NodeInfo(NodeType.INPUT),
             new NodeInfo(NodeType.INPUT),
-            new NodeInfo(NodeType.NOT_GATE),
-            new NodeInfo(NodeType.NOT_GATE),
-            new NodeInfo(NodeType.AND_GATE),
-            new NodeInfo(NodeType.OR_GATE),
+            new NodeInfo(NodeType.OUTPUT),
+            new NodeInfo(NodeType.NAND_GATE),
+            new NodeInfo(NodeType.NAND_GATE),
+            new NodeInfo(NodeType.NAND_GATE),
+            new NodeInfo(NodeType.NAND_GATE),
+            // new NodeInfo(NodeType.NOT_GATE),
+            // new NodeInfo(NodeType.AND_GATE),
+            // new NodeInfo(NodeType.OR_GATE),
         ]
     }
 
@@ -45,7 +50,7 @@ export default class App extends Component {
         if (this.state.connections.find(c => c.to.id === id) === undefined) {
             this.setState({
                     points: '',
-                    connections: [...this.state.connections, {from: this.fromNode, to: {nodeInfo, id}, active: false}]
+                    connections: [...this.state.connections, {from: this.fromNode, to: {nodeInfo, id}}]
                 },
                 () => this.simulate()
             );
@@ -61,16 +66,11 @@ export default class App extends Component {
     }
 
     simulate = () => {
-        const connections = this.state.connections;
+        for (let i = 0; i < 2; i++)
+            for (let n of this.state.nodes)
+                n.simulate(this.state.connections);
 
-        for (let c of connections)
-            c.active = false;
-
-        for (let c of connections)
-            if (c.from.nodeInfo.isFirstNodeInLine(connections))
-                c.from.nodeInfo.simulate(connections);
-
-        this.setState({connections});
+        this.setState({});
     }
 
     removeConnection = connection => {
@@ -91,6 +91,10 @@ export default class App extends Component {
         );
     }
 
+    componentDidMount() {
+        this.simulate();
+    }
+
     render() {
         return (
             <div className={'app'} onMouseMove={e => this.mouseMove(e.clientX, e.clientY)} onMouseUp={() => this.mouseUp()} onContextMenu={e => e.preventDefault()}>
@@ -101,7 +105,7 @@ export default class App extends Component {
                 {this.state.connections
                     .map(connection => ({connection, line: this.getConnectionLineOfConnection(connection)}))
                     .map(({connection, line}, i) =>
-                        <svg className={'line ' + (connection.active ? 'line--active' : '')} key={i}>
+                        <svg className={'line ' + (connection.from.nodeInfo.status ? 'line--active' : '')} key={i}>
                             <polyline points={line} onContextMenu={() => this.removeConnection(connection)}/>
                         </svg>
                     )}

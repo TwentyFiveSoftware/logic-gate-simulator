@@ -14,7 +14,7 @@ export default class Node extends Component {
         return (
             <Draggable handle={'.node__container'}>
                 <div className={'node'}>
-                    <div className={'node__container ' + (nodeInfo.calculateState(connections) ? 'node__container--active' : '')}>
+                    <div className={'node__container ' + (nodeInfo.status ? 'node__container--active' : '')}>
                         {nodeInfo.name}
 
                         {nodeInfo.hasSwitch &&

@@ -17,32 +17,18 @@ export class NodeInfo {
 
         for (let o = 0; o < nodeType.outputs; o++)
             this.outputs.push(`NODE-${this.id}_OUTPUT-${o}`);
+
+        this.status = false;
     }
 
     hasIncomingConnectionsOnPort = (id, connections) => connections.find(c => c.to.id === id) !== undefined;
 
-    getIncomingConnections = connections => connections.filter(c => c.to.nodeInfo.id === this.id);
-    getOutgoingConnections = connections => connections.filter(c => c.from.nodeInfo.id === this.id);
-
-    isFirstNodeInLine = connections => this.getIncomingConnections(connections).length === 0 && this.getOutgoingConnections(connections).length > 0;
-
     getProcessedInput = connections => {
-        const processedInput = this.getIncomingConnections(connections).map(c => c.active);
+        const processedInput = connections.filter(c => c.to.nodeInfo.id === this.id).map(c => c.from.nodeInfo.status);
         return [...processedInput, ...Array(this.nodeType.inputs - processedInput.length).fill(false)];
     }
 
-    calculateState = connections => this.nodeType.transform(this.getProcessedInput(connections), this.switchEnabled);
-
     simulate = connections => {
-        const output = this.calculateState(connections);
-
-        // console.log(this.nodeType.name);
-        // console.log(this.getProcessedInput(connections));
-        // console.log(output);
-
-        this.getOutgoingConnections(connections).forEach(c => {
-            c.active = output;
-            c.to.nodeInfo.simulate(connections);
-        });
+        this.status = this.nodeType.transform(this.getProcessedInput(connections), this.switchEnabled);
     }
 }
