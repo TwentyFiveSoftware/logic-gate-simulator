@@ -41,19 +41,35 @@ body {
     user-select: none;
 
     &__container {
-        padding: 3rem 4rem;
+        padding: 2.5rem 4rem;
         background-color: var(--color-node);
         border: 0.1rem solid var(--color-node-border);
         display: grid;
         place-items: center;
         cursor: move;
-        font-size: 2rem;
         user-select: none;
         color: var(--color-node-text);
+        font-size: 2rem;
 
         &--active {
             border: 0.1rem solid var(--color-node-active);
             color: var(--color-node-active);
+        }
+    }
+
+    &__svg {
+        height: 6rem;
+
+        svg {
+            height: 7rem;
+
+            & * {
+                fill: var(--color-node-text);
+            }
+        }
+
+        &--active svg * {
+            fill: var(--color-node-active);
         }
     }
 

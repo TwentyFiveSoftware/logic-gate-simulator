@@ -5,7 +5,8 @@ export default {
         name: 'INPUT',
         hasSwitch: true,
         transform: (inputs, switchEnabled) => switchEnabled,
-        key: 'i'
+        key: 'i',
+        svg: null
     },
     OUTPUT: {
         inputs: 1,
@@ -13,7 +14,8 @@ export default {
         name: 'OUTPUT',
         hasSwitch: false,
         transform: (inputs, __) => inputs[0],
-        key: 'o'
+        key: 'u',
+        svg: null
     },
     NOT_GATE: {
         inputs: 1,
@@ -21,7 +23,8 @@ export default {
         name: 'NOT-GATE',
         hasSwitch: false,
         transform: (inputs, _) => !inputs[0],
-        key: 'n'
+        key: 'n',
+        svg: 'not.svg'
     },
     AND_GATE: {
         inputs: 2,
@@ -29,7 +32,8 @@ export default {
         name: 'AND-GATE',
         hasSwitch: false,
         transform: (inputs, _) => inputs[0] && inputs[1],
-        key: 'a'
+        key: 'a',
+        svg: 'and.svg'
     },
     OR_GATE: {
         inputs: 2,
@@ -37,7 +41,8 @@ export default {
         name: 'OR-GATE',
         hasSwitch: false,
         transform: (inputs, _) => inputs[0] || inputs[1],
-        key: 'o'
+        key: 'o',
+        svg: 'or.svg'
     },
     NAND_GATE: {
         inputs: 2,
@@ -45,6 +50,7 @@ export default {
         name: 'NAND-GATE',
         hasSwitch: false,
         transform: (inputs, _) => !(inputs[0] && inputs[1]),
-        key: 'A'
+        key: 'A',
+        svg: 'nand.svg'
     },
 };
