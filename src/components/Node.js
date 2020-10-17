@@ -12,7 +12,7 @@ export default class Node extends Component {
         const {nodeInfo, connections} = this.props;
 
         return (
-            <Draggable handle={'.node__container'} defaultPosition={nodeInfo.defaultPos}>
+            <Draggable handle={'.node__container'} defaultPosition={nodeInfo.defaultPos} positionOffset={this.props.positionOffset}>
                 <div className={'node'} id={nodeInfo.id}>
                     <div className={'node__container ' + (nodeInfo.status ? 'node__container--active' : '')}>
                         <div className={'node__name'}>{nodeInfo.nodeType.name}</div>
