@@ -12,19 +12,7 @@ export default class App extends Component {
 
         connections: [],
 
-        nodes: [
-            // new NodeInfo(NodeType.NOT_GATE),
-            // new NodeInfo(NodeType.INPUT),
-            // new NodeInfo(NodeType.INPUT),
-            // new NodeInfo(NodeType.OUTPUT),
-            // new NodeInfo(NodeType.NAND_GATE),
-            // new NodeInfo(NodeType.NAND_GATE),
-            // new NodeInfo(NodeType.NAND_GATE),
-            // new NodeInfo(NodeType.NAND_GATE),
-            // new NodeInfo(NodeType.NOT_GATE),
-            // new NodeInfo(NodeType.AND_GATE),
-            // new NodeInfo(NodeType.OR_GATE),
-        ]
+        nodes: []
     }
 
     fromNode = null;
