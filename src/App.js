@@ -3,6 +3,8 @@ import {NodeInfo} from './models/NodeInfo';
 import Node from './components/Node';
 import NodeType from './models/NodeType';
 
+const MAX_SIMULATION_ITERATIONS = 50;
+
 export default class App extends Component {
 
     state = {
@@ -69,9 +71,15 @@ export default class App extends Component {
     }
 
     simulate = () => {
-        for (let i = 0; i < 2; i++)
+        for (let i = 0; i < MAX_SIMULATION_ITERATIONS; i++) {
+            const nodesStatusSnapshot = JSON.stringify(this.state.nodes.map(n => n.status));
+
             for (let n of this.state.nodes)
                 n.simulate(this.state.connections);
+
+            if (nodesStatusSnapshot === JSON.stringify(this.state.nodes.map(n => n.status)))
+                break;
+        }
 
         this.setState({});
     }
