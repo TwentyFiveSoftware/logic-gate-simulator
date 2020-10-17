@@ -28,6 +28,7 @@ export default class Node extends Component {
                         {nodeInfo.inputs.map((id, index) =>
                             <div key={index} id={id} className={'node__point ' + (nodeInfo.hasIncomingConnectionsOnPort(id, connections) ? 'node__point--filled' : '')}
                                  onMouseUp={_ => this.props.connectLine(id)}
+                                 onContextMenu={() => this.props.removeConnections(id)}
                             />
                         )}
                     </div>
@@ -36,6 +37,7 @@ export default class Node extends Component {
                         {nodeInfo.outputs.map((id, index) =>
                             <div key={index} id={id} className={'node__point node__point--filled'}
                                  onMouseDown={() => this.props.startLine(id)}
+                                 onContextMenu={() => this.props.removeConnections(id)}
                             />
                         )}
                     </div>

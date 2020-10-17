@@ -73,9 +73,27 @@ export default class App extends Component {
         this.setState({connections});
     }
 
+    removeConnection = connection => {
+        if (this.fromNode !== null) return;
+
+        this.setState(
+            {connections: this.state.connections.filter(c => c !== connection)},
+            () => this.simulate()
+        );
+    }
+
+    removeConnections = id => {
+        if (this.fromNode !== null) return;
+
+        this.setState(
+            {connections: this.state.connections.filter(c => c.from.id !== id && c.to.id !== id)},
+            () => this.simulate()
+        );
+    }
+
     render() {
         return (
-            <div className={'app'} onMouseMove={e => this.mouseMove(e.clientX, e.clientY)} onMouseUp={() => this.mouseUp()}>
+            <div className={'app'} onMouseMove={e => this.mouseMove(e.clientX, e.clientY)} onMouseUp={() => this.mouseUp()} onContextMenu={e => e.preventDefault()}>
                 <svg className={'line'}>
                     <polyline points={this.state.points}/>
                 </svg>
@@ -84,7 +102,7 @@ export default class App extends Component {
                     .map(connection => ({connection, line: this.getConnectionLineOfConnection(connection)}))
                     .map(({connection, line}, i) =>
                         <svg className={'line ' + (connection.active ? 'line--active' : '')} key={i}>
-                            <polyline points={line}/>
+                            <polyline points={line} onContextMenu={() => this.removeConnection(connection)}/>
                         </svg>
                     )}
 
@@ -92,6 +110,7 @@ export default class App extends Component {
                     <Node key={index}
                           startLine={id => this.startLine(node, id)}
                           connectLine={id => this.connectLine(node, id)}
+                          removeConnections={id => this.removeConnections(id)}
                           nodeInfo={node}
                           connections={this.state.connections}
                           simulate={() => this.simulate()}
