@@ -20,4 +20,11 @@ export default {
         hasSwitch: false,
         transform: (inputs, _) => inputs[0] && inputs[1]
     },
+    OR_GATE: {
+        inputs: 2,
+        outputs: 1,
+        name: 'OR-GATE',
+        hasSwitch: false,
+        transform: (inputs, _) => inputs[0] || inputs[1]
+    },
 };

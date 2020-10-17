@@ -16,6 +16,7 @@ export default class App extends Component {
             new NodeInfo(NodeType.NOT_GATE),
             new NodeInfo(NodeType.NOT_GATE),
             new NodeInfo(NodeType.AND_GATE),
+            new NodeInfo(NodeType.OR_GATE),
         ]
     }
 
