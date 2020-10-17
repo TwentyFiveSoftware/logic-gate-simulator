@@ -2,15 +2,23 @@
 
 :root {
     --color-background: #F4F4F4;
+
     --color-node: #FFFFFF;
     --color-node-border: #DDDDDD;
     --color-node-text: #282C34;
     --color-node-active: #98C379;
     --color-node-point: #98C379;
+
     --color-connection: #323844;
     --color-connection-active: #98C379;
+
     --color-switch-background: #CCCCCC;
     --color-switch-active: #98C379;
+
+    --color-sidebar: #FFFFFF;
+    --color-sidebar-border: #DDDDDD;
+    --color-sidebar-text: #282C34;
+    --color-sidebar-hover: #98C379;
 }
 
 * {
@@ -153,5 +161,67 @@ body {
         height: 1.9rem;
         background-color: var(--color-node);
         border-radius: 50%;
+    }
+}
+
+.sidebar {
+    width: 10rem;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: var(--color-sidebar);
+    border: 0.1rem solid var(--color-sidebar-border);
+    z-index: 20;
+    padding: 3rem 1rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-item {
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    border-bottom: 0.1rem solid var(--color-sidebar-border);
+    color: var(--color-sidebar-text);
+
+    &:last-child {
+        border: none;
+    }
+
+    &:hover {
+        color: var(--color-sidebar-hover);
+
+        svg * {
+            fill: var(--color-sidebar-hover) !important;
+        }
+    }
+
+    &__name {
+        font-size: 1.5rem;
+        text-align: center;
+        line-height: 1.05;
+        margin-bottom: -0.7rem;
+    }
+
+    &__svg div div {
+        display: grid;
+        margin-bottom: -1rem;
+
+        svg {
+            width: auto;
+            height: 5rem;
+            justify-self: center;
+
+            & * {
+                fill: var(--color-sidebar-text)
+            }
+        }
     }
 }

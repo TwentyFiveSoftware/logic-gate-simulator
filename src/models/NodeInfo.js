@@ -1,8 +1,8 @@
 import {v4} from 'uuid';
-import NodeType from "./NodeType";
+import NodeType from './NodeType';
 
 export class NodeInfo {
-    constructor(nodeType, id = v4(), defaultPos = {x: 50, y: 50}, startStatus = false, startSwitchEnabled = false) {
+    constructor(nodeType, defaultPos = {x: 0, y: 0}, id = v4(), startStatus = false, startSwitchEnabled = false) {
         this.id = id;
         this.nodeType = nodeType;
         this.defaultPos = defaultPos;

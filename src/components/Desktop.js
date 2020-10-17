@@ -107,7 +107,7 @@ export default class Desktop extends Component {
         if (localStorage.getItem('nodes') !== null)
             nodes = JSON
                 .parse(localStorage.getItem('nodes'))
-                .map(n => new NodeInfo(NodeType[n.nodeTypeKey], n.id, n.pos, n.status, n.switchEnabled));
+                .map(n => new NodeInfo(NodeType[n.nodeTypeKey], n.pos, n.id, n.status, n.switchEnabled));
 
         if (localStorage.getItem('connections') !== null)
             connections = JSON
@@ -126,13 +126,22 @@ export default class Desktop extends Component {
         );
     }
 
+    addNewNode = type => {
+        let {x, y} = this.props.position;
+
+        x = -x + Math.floor(window.innerWidth / 2) - 100;
+        y = -y + Math.floor(window.innerHeight / 2) - 50;
+
+        this.setState({nodes: [...this.state.nodes, new NodeInfo(type, {x, y})]});
+    }
+
     componentDidMount() {
         this.load();
 
         window.addEventListener('keydown', e => {
             const type = Object.values(NodeType).find(t => t.key === e.key);
             if (type !== undefined)
-                this.setState({nodes: [...this.state.nodes, new NodeInfo(type)]});
+                this.addNewNode(type);
         });
     }
 
