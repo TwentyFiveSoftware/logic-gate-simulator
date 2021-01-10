@@ -78,6 +78,7 @@ body {
 
         &--active svg * {
             fill: var(--color-node-active);
+            stroke: var(--color-node-active);
         }
     }
 
@@ -165,7 +166,7 @@ body {
 }
 
 .sidebar {
-    width: 10rem;
+    width: 12rem;
     position: absolute;
     right: 0;
     top: 0;
@@ -173,7 +174,7 @@ body {
     background-color: var(--color-sidebar);
     border: 0.1rem solid var(--color-sidebar-border);
     z-index: 20;
-    padding: 3rem 1rem;
+    padding: 1rem;
 
     display: flex;
     flex-direction: column;
@@ -200,6 +201,7 @@ body {
 
         svg * {
             fill: var(--color-sidebar-hover) !important;
+            stroke: var(--color-sidebar-hover) !important;
         }
     }
 
@@ -212,15 +214,16 @@ body {
 
     &__svg div div {
         display: grid;
-        margin-bottom: -1rem;
+        margin-top: 1.5rem;
 
         svg {
-            width: auto;
-            height: 5rem;
+            width: 100%;
+            height: 3rem;
             justify-self: center;
 
             & * {
-                fill: var(--color-sidebar-text)
+                fill: var(--color-sidebar-text);
+                stroke: var(--color-sidebar-text);
             }
         }
     }

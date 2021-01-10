@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Desktop from './components/Desktop';
-import Sidebar from "./components/Sidebar";
+import Sidebar from './components/Sidebar';
 
 export default class App extends Component {
     state = {
